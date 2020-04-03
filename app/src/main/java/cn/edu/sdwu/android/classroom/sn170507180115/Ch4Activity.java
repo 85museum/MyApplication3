@@ -1,20 +1,26 @@
 package cn.edu.sdwu.android.classroom.sn170507180115;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.media.Image;
 import android.media.MediaCodec;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.R.attr.x;
 
 public class Ch4Activity extends AppCompatActivity implements View.OnFocusChangeListener{
 
@@ -47,8 +53,23 @@ public class Ch4Activity extends AppCompatActivity implements View.OnFocusChange
 
         });
         //事件源
-        EditText email=(EditText)findViewById(R.id.ch4_email);
+        EditText email=(EditText) findViewById(R.id.ch4_email);
         email.setOnFocusChangeListener(this);
+
+        LinearLayout linearLayout=(LinearLayout)findViewById(R.id.ch4_1_11);
+        linearLayout.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                float x=motionEvent.getX();
+                float y=motionEvent.getY();
+                TextView textView=(TextView) findViewById(R.id.ch4_1_tv);
+                textView.setText("x:"+x+"y:"+y);
+                return true;
+            }
+
+
+        });
     }
 
     @Override
@@ -59,10 +80,10 @@ public class Ch4Activity extends AppCompatActivity implements View.OnFocusChange
         if(!b){
             String content=editText.getText().toString();//得到EditText的内容
             //判断邮箱合法性的正则表达式
-            String regEx1="/^(([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-]$";
+            String regEx1="^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
             Pattern pattern= Pattern.compile(regEx1);
             Matcher matcher=pattern.matcher(content);
-            TextView textView=(TextView)findViewById(R.id.ch4_tv);
+            TextView textView=(TextView)findViewById(R.id.ch4_1_tv);
             if(matcher.matches()){
                 textView.setText("");
             }else{
@@ -78,5 +99,12 @@ public class Ch4Activity extends AppCompatActivity implements View.OnFocusChange
        public void onClick(View view){
             Log.i(Ch4Activity.class.toString(),"button click");
         }
+    }
+
+
+    public void startMain(View view){
+        //界面跳转
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
